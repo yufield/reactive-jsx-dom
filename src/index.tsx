@@ -20,12 +20,12 @@ const forloop = computed(() => {
 const CustomTag = () => <div><h1>CustomTagElement</h1></div>
 const app = <div>
     <button onclick={() => {
-        count.value += 100
+        count.value += 1
         console.log('+1')
     }}>plus one
     </button>
     <button onclick={() => {
-        count.value -= 100
+        count.value -= 1
         console.log('-1')
     }}>minus one
     </button>
