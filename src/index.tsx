@@ -39,7 +39,7 @@ const app = <div id={'asdf'} class={'asdf'}>
     </div>
     <CustomTag/>
     <div>
-        <h1>forloop test:</h1>
+        <h1>map element test:</h1>
         {forloop}
     </div>
 </div>
