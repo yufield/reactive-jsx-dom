@@ -5,14 +5,14 @@
     "jsx": "react",
     "jsxFactory": "Dom.h",
     "jsxFragmentFactory": "Dom.Fragment",
-    "outDir": "./lib",
+    "outDir": "./dist",
     "downlevelIteration": true,
     "skipLibCheck": true
   },
   "exclude": [
-    "node_modules/*"
+    "../node_modules/*"
   ],
   "include": [
-    "src/*"
+    "./*"
   ],
 }

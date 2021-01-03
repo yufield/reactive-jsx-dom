@@ -1,21 +1,20 @@
-import Dom from './dom'
-import {render} from "./render";
-import {computed, ref} from '@vue/reactivity';
+import Dom from '../lib'
+import { computed, ref } from '@vue/reactivity';
 
 const color = ref('blue')
 const count = ref(0);
 const forloop = computed(() => {
-        if (count.value > 0) {
-            return [...Array(count.value).keys()]
-                .map(num =>
-                    <>
-                        <br/>
-                        <b>number: {num + 1} element</b>
-                    </>)
-        } else {
-            return 'nothing'
-        }
+    if (count.value > 0) {
+        return [...Array(count.value).keys()]
+            .map(num =>
+                <>
+                    <br />
+                    <b>number: {num + 1} element</b>
+                </>)
+    } else {
+        return 'nothing'
     }
+}
 )
 
 const CustomTag = () => <div><h1>CustomTagElement</h1></div>
@@ -32,15 +31,15 @@ const app = <div id={'asdf'} class={'asdf'}>
         console.log('-1')
     }}>minus one
     </button>
-    <div style={{color}}>
+    <div style={{ color }}>
         <div>
             <h1>count:{count}</h1>
         </div>
     </div>
-    <CustomTag/>
+    <CustomTag />
     <div>
         <h1>map element test:</h1>
         {forloop}
     </div>
 </div>
-render(app, document.body)
+Dom.render(app, document.body)

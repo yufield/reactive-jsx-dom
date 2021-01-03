@@ -1,10 +1,10 @@
-import {effect, unref} from '@vue/reactivity';
+import { effect, unref } from '@vue/reactivity';
 
 const IMPORTANT_REGEX = /(.*)\W+!important\W*$/;
 
 export type Props = { [K in string]: any };
 
-export const FRAGMENT_TAG = 'Fragment'
+export const Fragment = 'Fragment'
 
 export type Factory<P> = (props?: P, ...children) => Node;
 
@@ -30,7 +30,7 @@ export function appendChildren<T extends Node>(parent: T, children: any[]) {
 
 export function h<K extends keyof HTMLElementTagNameMap>(tagName: K, jsxProps?: Props, ...children: (string | Node)[]): HTMLElementTagNameMap[K];
 export function h(tagName: string, jsxProps?: Props, ...children: (string | Node)[]): HTMLElement;
-export function h(tagName: typeof FRAGMENT_TAG, jsxProps?: Props, ...children: (string | Node)[]): DocumentFragment;
+export function h(tagName: typeof Fragment, jsxProps?: Props, ...children: (string | Node)[]): DocumentFragment;
 export function h<F extends Factory<P>, P>(tagName: F, jsxProps?: P, ...children: (string | Node)[]): ReturnType<F>;
 export function h<F extends Factory<P>, P>(tagName: string | F, jsxProps?: Props | P, ...children: (string | Node)[]): Node {
     if (typeof tagName == 'function') {
@@ -45,7 +45,7 @@ export function h<F extends Factory<P>, P>(tagName: string | F, jsxProps?: Props
 }
 
 function createElement(tagName: string, jsxProps?: Props) {
-    if (tagName == FRAGMENT_TAG) {
+    if (tagName == Fragment) {
         return document.createDocumentFragment()
     } else {
         const htmlElement = document.createElement(tagName);
@@ -87,5 +87,5 @@ function createElement(tagName: string, jsxProps?: Props) {
 
 export default {
     h,
-    Fragment: FRAGMENT_TAG
+    Fragment
 }
