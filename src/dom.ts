@@ -97,8 +97,3 @@ function createNode(tagName: string, jsxProps?: Props) {
         return htmlElement
     }
 }
-
-export default {
-    h: createElement,
-    Fragment
-}

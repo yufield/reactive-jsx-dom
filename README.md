@@ -29,6 +29,19 @@ const CustomTag = () => <div><h1>CustomTagElement</h1></div>
 document.body.appendChild(<CustomTag/>)
 //or use
 document.body.appendChild(CustomTag())
+//it also can used with Web Components
+class HelloWorld extends HTMLElement {
+    constructor(props) {
+        customElements.define('hello-element', HelloWorld)
+        super();
+    }
+
+    connectedCallback() {
+        const shadowRoot = this.attachShadow({ mode: "open" });
+        shadowRoot.appendChild(<div>hello world</div>)
+    }
+}
+document.body.appendChild(<HelloWorld/>)
 ```
 or with vite
 ```json
