@@ -1,18 +1,18 @@
 {
   "compilerOptions": {
-    "module": "CommonJS",
+    "esModuleInterop": true,
+    "moduleResolution": "node",
+    "module": "ESNext",
     "target": "ES5",
-    "jsx": "react",
-    "jsxFactory": "Dom.h",
-    "jsxFragmentFactory": "Dom.Fragment",
-    "outDir": "./lib",
-    "downlevelIteration": true,
+    "outDir": "./dist",
+    "declaration": true,
     "skipLibCheck": true
   },
   "exclude": [
-    "node_modules/*"
+    "node_modules",
+    "dist"
   ],
   "include": [
-    "src/*"
-  ],
+    "src/"
+  ]
 }

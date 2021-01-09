@@ -6,7 +6,15 @@ export type Props = { [K in string]: any };
 
 export const Fragment = 'Fragment'
 
-export type Factory<P> = (props?: P, ...children) => Node;
+export type Factory<P> = (props?: P, ...children: (string | Node)[]) => Node;
+
+export interface ComponentConstructor<C extends Component<P>, P> {
+    new(props?: P, ...children: (string | Node)[]): C;
+}
+
+export interface Component<P> {
+    render: Factory<P>
+}
 
 export function appendChildren<T extends Node>(parent: T, children: any[]) {
     effect(() => {
@@ -28,27 +36,32 @@ export function appendChildren<T extends Node>(parent: T, children: any[]) {
     })
 }
 
-export function h<K extends keyof HTMLElementTagNameMap>(tagName: K, jsxProps?: Props, ...children: (string | Node)[]): HTMLElementTagNameMap[K];
-export function h(tagName: string, jsxProps?: Props, ...children: (string | Node)[]): HTMLElement;
-export function h(tagName: typeof Fragment, jsxProps?: Props, ...children: (string | Node)[]): DocumentFragment;
-export function h<F extends Factory<P>, P>(tagName: F, jsxProps?: P, ...children: (string | Node)[]): ReturnType<F>;
-export function h<F extends Factory<P>, P>(tagName: string | F, jsxProps?: Props | P, ...children: (string | Node)[]): Node {
+export function createElement<K extends keyof HTMLElementTagNameMap>(tagName: K, jsxProps?: Props, ...children: (string | Node)[]): HTMLElementTagNameMap[K];
+export function createElement(tagName: string, jsxProps?: Props, ...children: (string | Node)[]): HTMLElement;
+export function createElement(tagName: typeof Fragment, jsxProps?: Props, ...children: (string | Node)[]): DocumentFragment;
+export function createElement<F extends Factory<P>, P>(tagName: F, jsxProps?: P, ...children: (string | Node)[]): ReturnType<F>;
+export function createElement<C extends Component<P>, P>(tagName: ComponentConstructor<C, P>, jsxProps?: P, ...children: (string | Node)[]): C;
+export function createElement<P>(tagName: any, jsxProps?: any, ...children: any[]): Node {
     if (typeof tagName == 'function') {
-        return tagName(jsxProps as P, ...children);
+        if (tagName.prototype instanceof HTMLElement) {
+            return new tagName(jsxProps as P, ...children)
+        } else {
+            return (tagName as Factory<P>)(jsxProps as P, ...children);
+        }
     } else if (typeof tagName == 'string') {
-        const htmlElement = createElement(tagName, unref(jsxProps))
-        appendChildren(htmlElement, children);
-        return htmlElement
+        const node = createNode(tagName, unref(jsxProps))
+        appendChildren(node, children);
+        return node
     } else {
         throw `invalid tagName ${tagName}`
     }
 }
 
-function createElement(tagName: string, jsxProps?: Props) {
+function createNode(tagName: string, jsxProps?: Props) {
     if (tagName == Fragment) {
         return document.createDocumentFragment()
     } else {
-        const htmlElement = document.createElement(tagName);
+        const htmlElement = document.createElement(tagName, jsxProps);
         effect(() => {
             if (jsxProps != null) {
                 Object.keys(jsxProps).forEach(jsxPropsKey => {
@@ -71,7 +84,7 @@ function createElement(tagName: string, jsxProps?: Props) {
                                 }
                             }
                         }
-                    } else if (jsxPropsKey.startsWith('data-')) {
+                    } else if (jsxPropsKey.substr(0, 5) == 'data-') {
                         htmlElement.setAttribute(jsxPropsKey, jsxProps[jsxPropsKey]);
                     } else if (jsxPropsKey == 'class') {
                         htmlElement.className = jsxPropsValue
@@ -86,6 +99,6 @@ function createElement(tagName: string, jsxProps?: Props) {
 }
 
 export default {
-    h,
+    h: createElement,
     Fragment
 }
