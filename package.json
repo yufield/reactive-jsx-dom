@@ -1,6 +1,6 @@
 {
   "name": "reactive-jsx-dom",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "use @vue/reactivity and jsx to render actual dom reactively",
   "main": "dist/index.js",
   "repository": {
